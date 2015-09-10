@@ -18,6 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "chef-master" do |chef|
     # web.vm.box = "apache"
     chef.vm.hostname = "chef-master"
+    chef.vm.provision "shell", path: "chef-master.sh"
   end
 
   # The url from where the 'config.vm.box' box will be fetched if it
