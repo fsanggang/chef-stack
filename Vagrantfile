@@ -33,6 +33,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     db.vm.provision "shell", path: "database.sh"
 
+    config.vm.provision "chef_client" do |chef|
+      chef.chef_server_url = "https://chef-master"
+      chef.validation_key_path = "validation.pem"
+    end
+
     db.vm.provider "virtualbox" do |v|
       v.memory = 512
       v.cpus = 1
