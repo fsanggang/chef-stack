@@ -28,6 +28,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network "private_network", ip: master_ip
   end
 
+chef_master_str = %{
+if ! grep #{master_ip} /etc/hosts; then
+echo "#{master_ip} chef-master" >> /etc/hosts
+fi
+}
+
   config.vm.define "database" do |db|
     db.vm.hostname = "database"
 
