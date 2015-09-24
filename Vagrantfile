@@ -16,7 +16,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   master_ip = "10.0.10.2"
 
   config.vm.define "chef-master" do |chef|
-    # web.vm.box = "apache"
     chef.vm.hostname = "chef-master"
 
     chef.vm.provision "shell", path: "chef-master.sh"
@@ -27,6 +26,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     config.vm.network "private_network", ip: master_ip
+  end
+
+  config.vm.define "database" do |db|
+    db.vm.hostname = "database"
+
+    db.vm.provision "shell", path: "database.sh"
+
+    db.vm.provider "virtualbox" do |v|
+      v.memory = 512
+      v.cpus = 1
+    end
+
+    config.vm.network "private_network", ip: "10.0.10.10"
   end
 
   # The url from where the 'config.vm.box' box will be fetched if it
