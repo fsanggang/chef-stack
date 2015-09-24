@@ -37,7 +37,7 @@ fi
   config.vm.define "database" do |db|
     db.vm.hostname = "database"
 
-    db.vm.provision "shell", path: "database.sh"
+    db.vm.provision "shell", inline: chef_master_str
 
     config.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef-master"
