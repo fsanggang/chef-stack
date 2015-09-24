@@ -5,3 +5,7 @@ fi
 if chef-server-ctl status | awk '{print $1}' | grep run -q; then
   chef-server-ctl reconfigure
 fi
+
+chef-server-ctl user-create admin admin admin fiona@showgizmo.com password --filename /vagrant/admin.pem
+
+chef-server-ctl org-create chef-stack-demo "chef-stack-demo" --association_user admin --filename /vagrant/validator.pem
