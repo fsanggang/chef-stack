@@ -41,7 +41,7 @@ fi
 
     config.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef-master"
-      chef.validation_key_path = "validation.pem"
+      chef.validation_key_path = "validator.pem"
     end
 
     db.vm.provider "virtualbox" do |v|
