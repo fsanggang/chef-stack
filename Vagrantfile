@@ -1,3 +1,9 @@
+require "json"
+
+postgresql_json = JSON.parse(File.open("postgresql.json").read)
+
+puts postgresql_json
+
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -44,18 +50,20 @@ sudo dpkg -i /vagrant/chef_12.4.1-1_amd64.deb;
     db.vm.provision "shell", inline: chef_master_str
     db.vm.provision "shell", inline: client_str
 
+    db.vm.network "private_network", ip: "10.0.10.10"
+
     db.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef-master/organizations/chef-stack-demo"
       chef.validation_client_name = "chef-stack-demo-validator" # this must be #{organisation_name}-validator
       chef.validation_key_path = "validator.pem"
+
+      chef.add_recipe "postgresql"
     end
 
     db.vm.provider "virtualbox" do |v|
       v.memory = 512
       v.cpus = 1
     end
-
-    db.vm.network "private_network", ip: "10.0.10.10"
   end
 
   # The url from where the 'config.vm.box' box will be fetched if it
