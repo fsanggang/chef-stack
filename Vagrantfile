@@ -2,8 +2,6 @@ require "json"
 
 postgresql_json = JSON.parse(File.open("postgresql.json").read)
 
-puts postgresql_json
-
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -58,6 +56,7 @@ sudo dpkg -i /vagrant/chef_12.4.1-1_amd64.deb;
       chef.validation_key_path = "validator.pem"
 
       chef.add_recipe "postgresql"
+      chef.json = postgresql_json
     end
 
     db.vm.provider "virtualbox" do |v|
