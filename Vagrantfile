@@ -25,7 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.cpus = 1
     end
 
-    config.vm.network "private_network", ip: master_ip
+    chef.vm.network "private_network", ip: master_ip
   end
 
 chef_master_str = %{
@@ -34,13 +34,19 @@ echo "#{master_ip} chef-master" >> /etc/hosts
 fi
 }
 
+client_str = %{
+sudo dpkg -i /vagrant/chef_12.4.1-1_amd64.deb;
+}
+
   config.vm.define "database" do |db|
     db.vm.hostname = "database"
 
     db.vm.provision "shell", inline: chef_master_str
+    db.vm.provision "shell", inline: client_str
 
-    config.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://chef-master"
+    db.vm.provision "chef_client" do |chef|
+      chef.chef_server_url = "https://chef-master/organizations/chef-stack-demo"
+      chef.validation_client_name = "chef-stack-demo-validator" # this must be #{organisation_name}-validator
       chef.validation_key_path = "validator.pem"
     end
 
@@ -49,7 +55,7 @@ fi
       v.cpus = 1
     end
 
-    config.vm.network "private_network", ip: "10.0.10.10"
+    db.vm.network "private_network", ip: "10.0.10.10"
   end
 
   # The url from where the 'config.vm.box' box will be fetched if it
