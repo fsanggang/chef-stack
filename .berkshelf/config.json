@@ -1,0 +1,9 @@
+{
+  "chef": {
+    "chef_server_url":        "https://10.0.10.2:443/organizations/chef-stack-demo",
+    "validation_client_name": "chef-stack-demo-validator",
+    "validation_key_path":    "./validator.pem"
+  },
+  "raise_license_exception": false,
+  "ssl": {"verify": false }
+}
